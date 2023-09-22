@@ -49,6 +49,12 @@ module RuboCop
         end
         alias on_defs on_def
 
+        def on_numblock(node)
+          if !numbered_parameters_allowed?
+            add_offense(node, message: "Do not use numbered parameters.")
+          end
+        end
+
         private
           def unless_allowed?
             !disable_syntax.include?("unless")
@@ -77,6 +83,10 @@ module RuboCop
                 arg.forwarded_restarg_type? || # foo(*)
                 (arg.hash_type? && arg.source == "**") # foo(**)
             end
+          end
+
+          def numbered_parameters_allowed?
+            !disable_syntax.include?("numbered_parameters")
           end
 
           def disable_syntax

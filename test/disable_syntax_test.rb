@@ -153,6 +153,21 @@ class DisableSyntaxTest < Minitest::Test
     RUBY
   end
 
+  def test_accepts_numbered_parameters_by_default
+    assert_no_offenses(<<~RUBY)
+      foo.each { puts _1 }
+    RUBY
+  end
+
+  def test_registers_offense_when_numbered_parameters_are_disabled
+    disable_syntax("numbered_parameters")
+
+    assert_offense(<<~RUBY)
+      foo.each { puts _1 }
+      ^^^^^^^^^^^^^^^^^^^^ Do not use numbered parameters.
+    RUBY
+  end
+
   def test_raises_when_unknown_disable_syntax_directive_is_set
     disable_syntax("unknown")
 
@@ -177,7 +192,8 @@ class DisableSyntaxTest < Minitest::Test
               "ternary",
               "safe_navigation",
               "endless_methods",
-              "arguments_forwarding"
+              "arguments_forwarding",
+              "numbered_parameters"
             ],
             "DisableSyntax" => Array(list)
           }

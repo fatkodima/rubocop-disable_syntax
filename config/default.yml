@@ -8,4 +8,5 @@ Style/DisableSyntax:
     - safe_navigation
     - endless_methods
     - arguments_forwarding
+    - numbered_parameters
   DisableSyntax: []
