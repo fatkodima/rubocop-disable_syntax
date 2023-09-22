@@ -34,6 +34,7 @@ Style/DisableSyntax:
     - numbered_parameters
     - shorthand_hash_syntax
     - and_or_not
+    - until
 
 Layout/EmptyLinesAroundAccessModifier:
   EnforcedStyle: only_before

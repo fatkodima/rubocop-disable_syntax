@@ -246,6 +246,25 @@ class DisableSyntaxTest < Minitest::Test
     RUBY
   end
 
+  def test_accepts_until_by_default
+    assert_no_offenses(<<~RUBY)
+      foo until condition
+    RUBY
+  end
+
+  def test_registers_offense_when_until_is_disabled
+    disable_syntax("until")
+
+    assert_offense(<<~RUBY)
+      foo until condition
+      ^^^^^^^^^^^^^^^^^^^ Do not use `until`.
+    RUBY
+
+    assert_correction(<<~RUBY)
+      foo while !(condition)
+    RUBY
+  end
+
   def test_raises_when_unknown_disable_syntax_directive_is_set
     disable_syntax("unknown")
 
@@ -274,7 +293,8 @@ class DisableSyntaxTest < Minitest::Test
               "numbered_parameters",
               "pattern_matching",
               "shorthand_hash_syntax",
-              "and_or_not"
+              "and_or_not",
+              "until"
             ],
             "DisableSyntax" => Array(list)
           }

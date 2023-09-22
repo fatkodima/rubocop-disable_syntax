@@ -83,6 +83,15 @@ module RuboCop
         end
         alias on_or on_and
 
+        def on_until(node)
+          return if until_allowed?
+
+          add_offense(node, message: "Do not use `until`.") do |corrector|
+            corrector.replace(node.loc.keyword, "while")
+            corrector.wrap(node.condition, "!(", ")")
+          end
+        end
+
         private
           def unless_allowed?
             !disable_syntax.include?("unless")
@@ -127,6 +136,10 @@ module RuboCop
 
           def and_or_not_allowed?
             !disable_syntax.include?("and_or_not")
+          end
+
+          def until_allowed?
+            !disable_syntax.include?("until")
           end
 
           def disable_syntax

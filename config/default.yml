@@ -12,4 +12,5 @@ Style/DisableSyntax:
     - pattern_matching
     - shorthand_hash_syntax
     - and_or_not
+    - until
   DisableSyntax: []
