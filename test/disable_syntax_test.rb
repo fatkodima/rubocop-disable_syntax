@@ -34,6 +34,21 @@ class DisableSyntaxTest < Minitest::Test
     RUBY
   end
 
+  def test_accepts_ternary_by_default
+    assert_no_offenses(<<~RUBY)
+      condition ? foo : bar
+    RUBY
+  end
+
+  def test_registers_offense_when_ternary_is_disabled
+    disable_syntax("ternary")
+
+    assert_offense(<<~RUBY)
+      condition ? foo : bar
+      ^^^^^^^^^^^^^^^^^^^^^ Do not use ternary operator.
+    RUBY
+  end
+
   def test_raises_when_unknown_disable_syntax_directive_is_set
     disable_syntax("unknown")
 
@@ -54,7 +69,8 @@ class DisableSyntaxTest < Minitest::Test
         {
           "Style/DisableSyntax" => {
             "SupportedDisableSyntax" => [
-              "unless"
+              "unless",
+              "ternary"
             ],
             "DisableSyntax" => Array(list)
           }

@@ -4,4 +4,5 @@ Style/DisableSyntax:
   VersionAdded: '0.1'
   SupportedDisableSyntax:
     - unless
+    - ternary
   DisableSyntax: []

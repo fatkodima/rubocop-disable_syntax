@@ -12,12 +12,18 @@ module RuboCop
               corrector.replace(node.loc.keyword, "if")
               corrector.wrap(node.condition, "!(", ")")
             end
+          elsif node.ternary? && !ternary_allowed?
+            add_offense(node, message: "Do not use ternary operator.")
           end
         end
 
         private
           def unless_allowed?
             !disable_syntax.include?("unless")
+          end
+
+          def ternary_allowed?
+            !disable_syntax.include?("ternary")
           end
 
           def disable_syntax

@@ -19,6 +19,9 @@ Style/GuardClause:
 Style/NegatedIf:
   Enabled: false
 
+Style/WordArray:
+  Enabled: false
+
 Style/DisableSyntax:
   DisableSyntax:
     - unless
