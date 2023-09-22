@@ -61,6 +61,19 @@ module RuboCop
           end
         end
 
+        def on_hash(node)
+          return if shorthand_hash_syntax_allowed? || node.pairs.none?(&:value_omission?)
+
+          add_offense(node, message: "Do not use shorthand hash syntax.") do |corrector|
+            node.pairs.each do |pair|
+              if pair.value_omission?
+                hash_key_source = pair.key.source
+                corrector.replace(pair, "#{hash_key_source}: #{hash_key_source}")
+              end
+            end
+          end
+        end
+
         private
           def unless_allowed?
             !disable_syntax.include?("unless")
@@ -97,6 +110,10 @@ module RuboCop
 
           def pattern_matching_allowed?
             !disable_syntax.include?("pattern_matching")
+          end
+
+          def shorthand_hash_syntax_allowed?
+            !disable_syntax.include?("shorthand_hash_syntax")
           end
 
           def disable_syntax

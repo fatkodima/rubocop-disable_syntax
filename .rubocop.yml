@@ -30,6 +30,9 @@ Style/DisableSyntax:
     - unless
     - safe_navigation
     - endless_methods
+    - arguments_forwarding
+    - numbered_parameters
+    - shorthand_hash_syntax
 
 Layout/EmptyLinesAroundAccessModifier:
   EnforcedStyle: only_before

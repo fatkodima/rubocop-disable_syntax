@@ -10,4 +10,5 @@ Style/DisableSyntax:
     - arguments_forwarding
     - numbered_parameters
     - pattern_matching
+    - shorthand_hash_syntax
   DisableSyntax: []

@@ -189,6 +189,36 @@ class DisableSyntaxTest < Minitest::Test
     RUBY
   end
 
+  def test_accepts_shorthand_hash_syntax_by_default
+    assert_no_offenses(<<~RUBY)
+      x = 1
+      { x: }
+    RUBY
+  end
+
+  def test_accepts_hash_literals
+    disable_syntax("shorthand_hash_syntax")
+
+    assert_no_offenses(<<~RUBY)
+      { x: x }
+    RUBY
+  end
+
+  def test_registers_offense_when_shorthand_hash_syntax_is_disabled
+    disable_syntax("shorthand_hash_syntax")
+
+    assert_offense(<<~RUBY)
+      x = 1
+      { x: }
+      ^^^^^^ Do not use shorthand hash syntax.
+    RUBY
+
+    assert_correction(<<~RUBY)
+      x = 1
+      { x: x }
+    RUBY
+  end
+
   def test_raises_when_unknown_disable_syntax_directive_is_set
     disable_syntax("unknown")
 
@@ -215,7 +245,8 @@ class DisableSyntaxTest < Minitest::Test
               "endless_methods",
               "arguments_forwarding",
               "numbered_parameters",
-              "pattern_matching"
+              "pattern_matching",
+              "shorthand_hash_syntax"
             ],
             "DisableSyntax" => Array(list)
           }
