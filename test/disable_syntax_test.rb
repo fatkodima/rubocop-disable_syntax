@@ -72,6 +72,37 @@ class DisableSyntaxTest < Minitest::Test
     RUBY
   end
 
+  def test_accepts_endless_methods_by_default
+    assert_no_offenses(<<~RUBY)
+      def foo = 1
+    RUBY
+  end
+
+  def test_accepts_regular_methods
+    disable_syntax("endless_methods")
+
+    assert_no_offenses(<<~RUBY)
+      def foo
+        1
+      end
+    RUBY
+  end
+
+  def test_registers_offense_when_endless_methods_are_disabled
+    disable_syntax("endless_methods")
+
+    assert_offense(<<~RUBY)
+      def foo = 1
+      ^^^^^^^^^^^ Do not use endless methods.
+    RUBY
+
+    assert_correction(<<~RUBY)
+      def foo
+        1
+      end
+    RUBY
+  end
+
   def test_raises_when_unknown_disable_syntax_directive_is_set
     disable_syntax("unknown")
 
@@ -94,7 +125,8 @@ class DisableSyntaxTest < Minitest::Test
             "SupportedDisableSyntax" => [
               "unless",
               "ternary",
-              "safe_navigation"
+              "safe_navigation",
+              "endless_methods"
             ],
             "DisableSyntax" => Array(list)
           }

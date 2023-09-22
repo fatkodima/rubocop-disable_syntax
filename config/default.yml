@@ -6,4 +6,5 @@ Style/DisableSyntax:
     - unless
     - ternary
     - safe_navigation
+    - endless_methods
   DisableSyntax: []

@@ -29,6 +29,7 @@ Style/DisableSyntax:
   DisableSyntax:
     - unless
     - safe_navigation
+    - endless_methods
 
 Layout/EmptyLinesAroundAccessModifier:
   EnforcedStyle: only_before

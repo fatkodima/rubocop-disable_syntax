@@ -23,6 +23,21 @@ module RuboCop
           end
         end
 
+        def on_def(node)
+          if node.endless? && !endless_methods_allowed?
+            add_offense(node, message: "Do not use endless methods.") do |corrector|
+              arguments = node.arguments.any? ? node.arguments.source : ""
+
+              corrector.replace(node, <<~RUBY.strip)
+                def #{node.method_name}#{arguments}
+                  #{node.body.source}
+                end
+              RUBY
+            end
+          end
+        end
+        alias on_defs on_def
+
         private
           def unless_allowed?
             !disable_syntax.include?("unless")
@@ -34,6 +49,10 @@ module RuboCop
 
           def safe_navigation_allowed?
             !disable_syntax.include?("safe_navigation")
+          end
+
+          def endless_methods_allowed?
+            !disable_syntax.include?("endless_methods")
           end
 
           def disable_syntax
