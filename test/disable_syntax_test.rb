@@ -49,6 +49,29 @@ class DisableSyntaxTest < Minitest::Test
     RUBY
   end
 
+  def test_accepts_safe_navigation_by_default
+    assert_no_offenses(<<~RUBY)
+      obj&.foo
+    RUBY
+  end
+
+  def test_accepts_method_calls
+    disable_syntax("safe_navigation")
+
+    assert_no_offenses(<<~RUBY)
+      obj.foo
+    RUBY
+  end
+
+  def test_registers_offense_when_safe_navigation_is_disabled
+    disable_syntax("safe_navigation")
+
+    assert_offense(<<~RUBY)
+      obj&.foo
+      ^^^^^^^^ Do not use `&.`.
+    RUBY
+  end
+
   def test_raises_when_unknown_disable_syntax_directive_is_set
     disable_syntax("unknown")
 
@@ -70,7 +93,8 @@ class DisableSyntaxTest < Minitest::Test
           "Style/DisableSyntax" => {
             "SupportedDisableSyntax" => [
               "unless",
-              "ternary"
+              "ternary",
+              "safe_navigation"
             ],
             "DisableSyntax" => Array(list)
           }

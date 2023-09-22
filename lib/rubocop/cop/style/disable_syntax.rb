@@ -17,6 +17,12 @@ module RuboCop
           end
         end
 
+        def on_csend(node)
+          if !safe_navigation_allowed?
+            add_offense(node, message: "Do not use `&.`.")
+          end
+        end
+
         private
           def unless_allowed?
             !disable_syntax.include?("unless")
@@ -24,6 +30,10 @@ module RuboCop
 
           def ternary_allowed?
             !disable_syntax.include?("ternary")
+          end
+
+          def safe_navigation_allowed?
+            !disable_syntax.include?("safe_navigation")
           end
 
           def disable_syntax
