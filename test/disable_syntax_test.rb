@@ -219,6 +219,33 @@ class DisableSyntaxTest < Minitest::Test
     RUBY
   end
 
+  def test_accepts_semantic_operators_by_default
+    assert_no_offenses(<<~RUBY)
+      x and y
+      x or y
+      not x
+    RUBY
+  end
+
+  def test_registers_offense_when_and_or_not_is_disabled
+    disable_syntax("and_or_not")
+
+    assert_offense(<<~RUBY)
+      x and y
+      ^^^^^^^ Use `&&` instead of `and`.
+      x or y
+      ^^^^^^ Use `||` instead of `or`.
+      not x
+      ^^^^^ Use `!` instead of `not`.
+    RUBY
+
+    assert_correction(<<~RUBY)
+      x && y
+      x || y
+      ! x
+    RUBY
+  end
+
   def test_raises_when_unknown_disable_syntax_directive_is_set
     disable_syntax("unknown")
 
@@ -246,7 +273,8 @@ class DisableSyntaxTest < Minitest::Test
               "arguments_forwarding",
               "numbered_parameters",
               "pattern_matching",
-              "shorthand_hash_syntax"
+              "shorthand_hash_syntax",
+              "and_or_not"
             ],
             "DisableSyntax" => Array(list)
           }

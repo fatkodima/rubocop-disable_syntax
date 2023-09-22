@@ -74,6 +74,15 @@ module RuboCop
           end
         end
 
+        def on_and(node)
+          if node.semantic_operator? && !and_or_not_allowed?
+            add_offense(node, message: "Use `#{node.alternate_operator}` instead of `#{node.operator}`.") do |corrector|
+              corrector.replace(node.loc.operator, node.alternate_operator)
+            end
+          end
+        end
+        alias on_or on_and
+
         private
           def unless_allowed?
             !disable_syntax.include?("unless")
@@ -114,6 +123,10 @@ module RuboCop
 
           def shorthand_hash_syntax_allowed?
             !disable_syntax.include?("shorthand_hash_syntax")
+          end
+
+          def and_or_not_allowed?
+            !disable_syntax.include?("and_or_not")
           end
 
           def disable_syntax

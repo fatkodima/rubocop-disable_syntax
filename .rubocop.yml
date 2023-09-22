@@ -33,6 +33,7 @@ Style/DisableSyntax:
     - arguments_forwarding
     - numbered_parameters
     - shorthand_hash_syntax
+    - and_or_not
 
 Layout/EmptyLinesAroundAccessModifier:
   EnforcedStyle: only_before
