@@ -1,1 +1,7 @@
-# Write it!
+Style/DisableSyntax:
+  Description: 'Forbid some unfavorite ruby syntax, such as `unless`, safe navigation etc.'
+  Enabled: true
+  VersionAdded: '0.1'
+  SupportedDisableSyntax:
+    - unless
+  DisableSyntax: []

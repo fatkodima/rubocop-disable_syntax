@@ -1,3 +1,7 @@
+require:
+  - rubocop-minitest
+  - rubocop-disable_syntax
+
 AllCops:
   TargetRubyVersion: 2.7
   NewCops: enable
@@ -9,9 +13,31 @@ Style/StringLiterals:
 Style/Documentation:
   Enabled: false
 
+Style/GuardClause:
+  Enabled: false
+
+Style/NegatedIf:
+  Enabled: false
+
+Style/DisableSyntax:
+  DisableSyntax:
+    - unless
+
+Layout/EmptyLinesAroundAccessModifier:
+  EnforcedStyle: only_before
+
+Layout/IndentationConsistency:
+  EnforcedStyle: indented_internal_methods
+
 Naming/FileName:
   Exclude:
     - lib/rubocop-disable_syntax.rb
 
 Gemspec/RequireMFA:
+  Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Metrics:
   Enabled: false
