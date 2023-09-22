@@ -7,4 +7,5 @@ Style/DisableSyntax:
     - ternary
     - safe_navigation
     - endless_methods
+    - arguments_forwarding
   DisableSyntax: []

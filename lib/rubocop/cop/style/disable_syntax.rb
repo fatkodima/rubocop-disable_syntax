@@ -21,6 +21,17 @@ module RuboCop
           if !safe_navigation_allowed?
             add_offense(node, message: "Do not use `&.`.")
           end
+          on_send(node)
+        end
+
+        def on_send(node)
+          if !arguments_forwarding_allowed? && arguments_forwarding?(node)
+            add_offense(node, message: "Do not use arguments forwarding.")
+          elsif node.prefix_not? && !and_or_not_allowed?
+            add_offense(node, message: "Use `!` instead of `not`.") do |corrector|
+              corrector.replace(node.loc.selector, "!")
+            end
+          end
         end
 
         def on_def(node)
@@ -53,6 +64,19 @@ module RuboCop
 
           def endless_methods_allowed?
             !disable_syntax.include?("endless_methods")
+          end
+
+          def arguments_forwarding_allowed?
+            !disable_syntax.include?("arguments_forwarding")
+          end
+
+          def arguments_forwarding?(send_node)
+            send_node.arguments.any? do |arg|
+              (arg.block_pass_type? && arg.source == "&") || # foo(&)
+                arg.forwarded_args_type? || # foo(...)
+                arg.forwarded_restarg_type? || # foo(*)
+                (arg.hash_type? && arg.source == "**") # foo(**)
+            end
           end
 
           def disable_syntax

@@ -103,6 +103,56 @@ class DisableSyntaxTest < Minitest::Test
     RUBY
   end
 
+  def test_accepts_arguments_forwarding_by_default
+    assert_no_offenses(<<~RUBY)
+      def foo(*) bar(*) end
+      def foo(**) bar(**) end
+      def foo(&) bar(&) end
+      def foo(...) bar(...) end
+    RUBY
+  end
+
+  def test_accepts_named_arguments_forwarding
+    disable_syntax("arguments_forwarding")
+
+    assert_no_offenses(<<~RUBY)
+      def foo(*args) bar(*args) end
+      def foo(**options) bar(**options) end
+      def foo(&block) bar(&block) end
+    RUBY
+  end
+
+  def test_registers_offense_when_arguments_forwarding_is_disabled
+    disable_syntax("arguments_forwarding")
+
+    assert_offense(<<~RUBY)
+      def foo(*)
+        bar(*)
+        ^^^^^^ Do not use arguments forwarding.
+      end
+
+      def foo(**)
+        bar(**)
+        ^^^^^^^ Do not use arguments forwarding.
+      end
+
+      def foo(&)
+        bar(&)
+        ^^^^^^ Do not use arguments forwarding.
+      end
+
+      def foo(...)
+        bar(...)
+        ^^^^^^^^ Do not use arguments forwarding.
+      end
+
+      def foo(arg, *)
+        bar(*)
+        ^^^^^^ Do not use arguments forwarding.
+      end
+    RUBY
+  end
+
   def test_raises_when_unknown_disable_syntax_directive_is_set
     disable_syntax("unknown")
 
@@ -126,7 +176,8 @@ class DisableSyntaxTest < Minitest::Test
               "unless",
               "ternary",
               "safe_navigation",
-              "endless_methods"
+              "endless_methods",
+              "arguments_forwarding"
             ],
             "DisableSyntax" => Array(list)
           }
