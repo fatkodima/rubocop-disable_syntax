@@ -1,0 +1,17 @@
+AllCops:
+  TargetRubyVersion: 2.7
+  NewCops: enable
+  SuggestExtensions: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/Documentation:
+  Enabled: false
+
+Naming/FileName:
+  Exclude:
+    - lib/rubocop-disable_syntax.rb
+
+Gemspec/RequireMFA:
+  Enabled: false
