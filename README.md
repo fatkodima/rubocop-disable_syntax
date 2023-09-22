@@ -1,34 +1,77 @@
-# Rubocop::DisableSyntax
+# rubocop-disable_syntax
 
-TODO: Delete this and the text below, and describe your gem
+`rubocop-disable_syntax` is a [RuboCop](https://github.com/rubocop/rubocop) plugin that allows to disable some unfavorite ruby syntax such as `unless`, safe navigation etc.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rubocop/disable_syntax`. To experiment with that code, run `bin/console` for an interactive prompt.
+## Requirements
+
+- ruby 2.7+
+- rubocop 1.50+
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application's Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
+```ruby
+gem 'rubocop-disable_syntax', group: :development, require: false
+```
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG --require=false
+And then run:
 
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+```sh
+$ bundle install
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+You need to tell RuboCop to load the `rubocop-disable_syntax` extension.
+
+Put this into your `.rubocop.yml`.
+
+```yaml
+require:
+  - rubocop-disable_syntax
+```
+
+All the ruby syntax features are enabled by default and so this gem acts as a no-op. You need to manually configure
+which ruby features you want to disable:
+
+```yml
+Style/DisableSyntax:
+  DisableSyntax:
+    - unless
+    - ternary
+    - safe_navigation
+    - endless_methods
+    - arguments_forwarding
+    - numbered_parameters
+    - pattern_matching
+    - shorthand_hash_syntax
+    - and_or_not
+    - until
+    - percent_literals
+```
+
+* `unless` - no `unless` keyword
+* `ternary` - no ternary operator (`condition ? foo : bar`)
+* `safe_navigation` - no safe navigation operator (`&.`)
+* `endless_methods` - no endless methods (`def foo = 1`)
+* `arguments_forwarding` - no arguments forwarding (`foo(...)`, `foo(*)`, `foo(**)`, `foo(&)`)
+* `numbered_parameters` - no numbered parameters (`foo.each { puts _1 }`)
+* `pattern_matching` - no pattern matching
+* `shorthand_hash_syntax` - no shorthand hash syntax (`{ x:, y: }`)
+* `and_or_not` - no `and`/`or`/`not` keywords (should use `&&`/`||`/`!` instead)
+* `until` - no `until` keyword
+* `percent_literals` - no any `%` style literals (`%w[foo bar]`, `%i[foo bar]`, `%q("str")`, `%r{/regex/}`)
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bundle install` to install dependencies. Then, run `rake` to run the linter and tests.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rubocop-disable_syntax.
+Bug reports and pull requests are welcome on GitHub at https://github.com/fatkodima/rubocop-disable_syntax.
 
 ## License
 
