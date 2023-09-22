@@ -265,6 +265,30 @@ class DisableSyntaxTest < Minitest::Test
     RUBY
   end
 
+  def test_accepts_percent_literals_by_default
+    assert_no_offenses(<<~RUBY)
+      %w[foo bar]
+      %i[foo bar]
+      %q("foo")
+      %r{foo}
+    RUBY
+  end
+
+  def test_registers_offense_when_percent_literals_are_disabled
+    disable_syntax("percent_literals")
+
+    assert_offense(<<~RUBY)
+      %w[foo bar]
+      ^^^^^^^^^^^ Do not use `%` literals for arrays.
+      %i[foo bar]
+      ^^^^^^^^^^^ Do not use `%` literals for arrays.
+      %q("foo")
+      ^^^^^^^^^ Do not use `%` literals for strings.
+      %r{foo}
+      ^^^^^^^ Do not use `%` literals for regexes.
+    RUBY
+  end
+
   def test_raises_when_unknown_disable_syntax_directive_is_set
     disable_syntax("unknown")
 
@@ -294,7 +318,8 @@ class DisableSyntaxTest < Minitest::Test
               "pattern_matching",
               "shorthand_hash_syntax",
               "and_or_not",
-              "until"
+              "until",
+              "percent_literals"
             ],
             "DisableSyntax" => Array(list)
           }

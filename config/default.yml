@@ -13,4 +13,5 @@ Style/DisableSyntax:
     - shorthand_hash_syntax
     - and_or_not
     - until
+    - percent_literals
   DisableSyntax: []

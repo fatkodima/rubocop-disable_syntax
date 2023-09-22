@@ -92,6 +92,24 @@ module RuboCop
           end
         end
 
+        def on_array(node)
+          if node.percent_literal? && !percent_literals_allowed?
+            add_offense(node, message: "Do not use `%` literals for arrays.")
+          end
+        end
+
+        def on_regexp(node)
+          if node.percent_r_literal? && !percent_literals_allowed?
+            add_offense(node, message: "Do not use `%` literals for regexes.")
+          end
+        end
+
+        def on_str(node)
+          if !percent_literals_allowed? && str_percent_literal?(node)
+            add_offense(node, message: "Do not use `%` literals for strings.")
+          end
+        end
+
         private
           def unless_allowed?
             !disable_syntax.include?("unless")
@@ -140,6 +158,16 @@ module RuboCop
 
           def until_allowed?
             !disable_syntax.include?("until")
+          end
+
+          def percent_literals_allowed?
+            !disable_syntax.include?("percent_literals")
+          end
+
+          def str_percent_literal?(node)
+            if node.loc.respond_to?(:begin) && node.loc.begin
+              node.loc.begin.source.start_with?("%")
+            end
           end
 
           def disable_syntax
