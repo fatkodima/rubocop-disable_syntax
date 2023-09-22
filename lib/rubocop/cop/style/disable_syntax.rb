@@ -55,6 +55,12 @@ module RuboCop
           end
         end
 
+        def on_case_match(node)
+          if !pattern_matching_allowed?
+            add_offense(node, message: "Do not use pattern matching.")
+          end
+        end
+
         private
           def unless_allowed?
             !disable_syntax.include?("unless")
@@ -87,6 +93,10 @@ module RuboCop
 
           def numbered_parameters_allowed?
             !disable_syntax.include?("numbered_parameters")
+          end
+
+          def pattern_matching_allowed?
+            !disable_syntax.include?("pattern_matching")
           end
 
           def disable_syntax

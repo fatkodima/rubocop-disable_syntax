@@ -168,6 +168,27 @@ class DisableSyntaxTest < Minitest::Test
     RUBY
   end
 
+  def test_accepts_pattern_matching_by_default
+    assert_no_offenses(<<~RUBY)
+      case foo
+      in bar
+        baz
+      end
+    RUBY
+  end
+
+  def test_registers_offense_when_pattern_matching_is_disabled
+    disable_syntax("pattern_matching")
+
+    assert_offense(<<~RUBY)
+      case foo
+      ^^^^^^^^ Do not use pattern matching.
+      in bar
+        baz
+      end
+    RUBY
+  end
+
   def test_raises_when_unknown_disable_syntax_directive_is_set
     disable_syntax("unknown")
 
@@ -193,7 +214,8 @@ class DisableSyntaxTest < Minitest::Test
               "safe_navigation",
               "endless_methods",
               "arguments_forwarding",
-              "numbered_parameters"
+              "numbered_parameters",
+              "pattern_matching"
             ],
             "DisableSyntax" => Array(list)
           }

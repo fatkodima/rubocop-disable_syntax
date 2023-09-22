@@ -9,4 +9,5 @@ Style/DisableSyntax:
     - endless_methods
     - arguments_forwarding
     - numbered_parameters
+    - pattern_matching
   DisableSyntax: []
