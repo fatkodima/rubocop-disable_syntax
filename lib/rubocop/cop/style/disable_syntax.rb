@@ -3,6 +3,20 @@
 module RuboCop
   module Cop
     module Style
+      # Forbid some unfavorite ruby syntax, such as `unless`, safe navigation etc.
+      #
+      # You can set syntax you want to disable via `DisableSyntax`.
+      # Available are: 'unless', 'ternary', 'safe_navigation', 'endless_methods',
+      # 'arguments_forwarding', 'numbered_parameters', 'pattern_matching',
+      # 'shorthand_hash_syntax', 'and_or_not', 'until', and 'percent_literals'.
+      #
+      # @example DisableSyntax: ['unless']
+      #   # bad
+      #   do_something unless condition
+      #
+      #   # good
+      #   do_something if !condition
+      #
       class DisableSyntax < Base
         extend AutoCorrector
 
