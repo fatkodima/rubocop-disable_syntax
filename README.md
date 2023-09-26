@@ -1,5 +1,7 @@
 # rubocop-disable_syntax
 
+[![Build Status](https://github.com/fatkodima/rubocop-disable_syntax/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/fatkodima/rubocop-disable_syntax/actions/workflows/ci.yml)
+
 `rubocop-disable_syntax` is a [RuboCop](https://github.com/rubocop/rubocop) plugin that allows to disable some unfavorite ruby syntax such as `unless`, safe navigation etc.
 
 ## Requirements
