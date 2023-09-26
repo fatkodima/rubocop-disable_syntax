@@ -5,6 +5,11 @@ module RuboCop
     module Style
       # Forbid some unfavorite ruby syntax, such as `unless`, safe navigation etc.
       #
+      # @safety
+      #   Autocorrection is unsafe because there is a different operator precedence
+      #   between logical operators (`&&`, `||` and `!`) and semantic operators (`and`, `or` and `not`),
+      #   and that might change the behavior.
+      #
       # You can set syntax you want to disable via `DisableSyntax`.
       # Available are: 'unless', 'ternary', 'safe_navigation', 'endless_methods',
       # 'arguments_forwarding', 'numbered_parameters', 'pattern_matching',

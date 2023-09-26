@@ -1,6 +1,7 @@
 Style/DisableSyntax:
   Description: 'Forbid some unfavorite ruby syntax, such as `unless`, safe navigation etc.'
   Enabled: true
+  SafeAutoCorrect: false
   VersionAdded: '0.1'
   SupportedDisableSyntax:
     - unless
