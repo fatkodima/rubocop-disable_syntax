@@ -6,8 +6,8 @@
 
 ## Requirements
 
-- ruby 2.7+
-- rubocop 1.50+
+- ruby 3.2+
+- rubocop 1.72+
 
 ## Installation
 
