@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rubocop-disable_syntax (0.1.1)
+    rubocop-disable_syntax (0.2.0)
       lint_roller
       rubocop (>= 1.72.0)
 
