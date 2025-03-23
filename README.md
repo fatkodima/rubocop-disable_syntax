@@ -30,9 +30,11 @@ You need to tell RuboCop to load the `rubocop-disable_syntax` extension.
 Put this into your `.rubocop.yml`.
 
 ```yaml
-require:
+plugins:
   - rubocop-disable_syntax
 ```
+
+**Note**: The plugin system is supported in RuboCop 1.72+. In earlier versions, use `require` instead of `plugins`.
 
 All the ruby syntax features are enabled by default and so this gem acts as a no-op. You need to manually configure
 which ruby features you want to disable:

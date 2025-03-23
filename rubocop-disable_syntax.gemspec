@@ -21,5 +21,8 @@ Gem::Specification.new do |spec|
   spec.files = Dir["**/*.{md,txt}", "{lib,config}/**/*"]
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "rubocop", ">= 1.50"
+  spec.metadata["default_lint_roller_plugin"] = "RuboCop::DisableSyntax::Plugin"
+
+  spec.add_dependency "lint_roller"
+  spec.add_dependency "rubocop", ">= 1.72.0"
 end
